@@ -204,7 +204,7 @@ class S3RequestModel(S3Model):
                                              default = auth.user.site_id if auth.is_logged_in() else None,
                                              readable = True,
                                              writable = True,
-                                             empty = False,
+                                             empty = settings.get_req_facility_optional(),
                                              #required = True,
                                              filterby = "obsolete",
                                              filter_opts = [False],

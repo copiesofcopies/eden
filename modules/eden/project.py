@@ -102,6 +102,7 @@ class S3ProjectModel(S3Model):
 
         T = current.T
         db = current.db
+        auth = current.auth
 
         #NONE = current.messages["NONE"]
 

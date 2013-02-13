@@ -1344,6 +1344,8 @@ class S3Config(Storage):
         return self.req.get("requester_optional", False)
     def get_req_requester_from_site(self):
         return self.req.get("requester_from_site", False)
+    def get_req_facility_optional(self):
+        return self.req.get("facility_optional", False)    
     def get_req_date_writable(self):
         """ Whether Request Date should be manually editable """
         return self.req.get("date_writable", True)

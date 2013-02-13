@@ -14,7 +14,7 @@
 """
 
 # Remove this line when you have edited this file sufficiently to proceed to the web interface
-FINISHED_EDITING_CONFIG_FILE = False
+FINISHED_EDITING_CONFIG_FILE = True
 
 # Select the Template
 # - which Modules are enabled
@@ -23,7 +23,7 @@ FINISHED_EDITING_CONFIG_FILE = False
 # - Workflows
 # - Theme
 # - note that you should restart your web2py after changing this setting
-settings.base.template = "default"
+settings.base.template = "SandyRelief"
 
 # Database settings
 # Uncomment to use a different database, other than sqlite

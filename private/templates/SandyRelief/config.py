@@ -120,7 +120,7 @@ settings.inv.item_status = {
    }
 
 # Request Management
-settings.req.req_type = ["People", "Stock"]#, "Summary"]
+settings.req.req_type = ["People", "Stock", "Other"]#, "Summary"]
 settings.req.prompt_match = False
 #settings.req.use_commit = False
 settings.req.requester_optional = True
@@ -133,6 +133,8 @@ settings.req.items_ask_purpose = False
 settings.req.requester_label = "Site Contact"
 # Filter Requester as being from the Site 
 settings.req.requester_from_site = True
+# Make facility optional
+settings.req.facility_optional = True   
 # Label for Inventory Requests
 settings.req.type_inv_label = "Supplies"
 # Uncomment to enable Summary 'Site Needs' tab for Offices/Facilities
@@ -199,12 +201,14 @@ settings.hrm.use_description = False
 settings.hrm.organisation_label = "Organization"
 
 # Projects
+# Uncomment this to use settings suitable for a global/regional organisation (e.g. DRR)
+settings.project.mode_3w = True
 # Use codes for projects
 settings.project.codes = True
 # Uncomment this to use settings suitable for detailed Task management
 settings.project.mode_task = False
 # Uncomment this to use Activities for projects
-settings.project.activities = True
+settings.project.activities = False
 # Uncomment this to use Milestones in project/task.
 settings.project.milestones = False
 # Uncomment this to disable Sectors in projects
@@ -218,6 +222,7 @@ def customize_project_project(**attr):
 
     tablename = "project_project"
     
+    s3db.project_project.organisation_id.label = T("Organizer")
     s3db.project_project.code.label = T("Project blurb (max. 100 characters)")
     s3db.project_project.code.max_length = 100 
     s3db.project_project.comments.label = T("How people can help")
