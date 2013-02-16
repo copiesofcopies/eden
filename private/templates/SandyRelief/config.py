@@ -219,6 +219,7 @@ settings.project.multiple_organisations = True
 def customize_project_project(**attr):
     s3db = current.s3db
     s3 = current.response.s3
+    auth = current.auth
 
     tablename = "project_project"
     
@@ -236,6 +237,31 @@ def customize_project_project(**attr):
     script = '''$('#project_project_code').attr('maxlength','100')'''
     
     s3.jquery_ready.append(script)
+
+    # Custom CRUD Strings
+    crud_strings = s3.crud_strings
+    crud_strings.project_project.title_search = T("Project List")
+
+    if auth.s3_has_permission("update", current.s3db.project_project):
+        list_fields = ["id",
+                       "name",
+                       "status_id",
+                       (T("Categories"), "activity_type.name"),
+                       "approved_by"
+                       ]
+    else:
+         list_fields = ["id",
+                        "name",
+                        "status_id",
+                        "description",
+                        (T("Contact email"), "human_resource_id$email.value"),
+                        (T("Categories"), "activity_type.name"),
+                        ]
+    report_fields = list_fields
+    report_col_default = "location.location_id"       
+    crud_strings[tablename].title_report  = T("Project Matrix")
+    report_fact_fields = [(field, "count") for field in report_fields]
+    report_fact_default = "theme.name"
 
     from s3 import s3forms
 
@@ -296,7 +322,10 @@ def customize_project_project(**attr):
         "comments",
     )
     
-    s3db.configure(tablename, crud_form = crud_form)
+    s3db.configure(tablename,
+                   report_fields = report_fields,
+                   list_fields = list_fields,
+                   crud_form = crud_form)
     
     return attr
 
