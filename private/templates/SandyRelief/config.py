@@ -305,7 +305,28 @@ def customize_project_project(**attr):
          "comments",
          ],
          filterby = dict(field = "name")
-        ),                                                                
+        ),    
+#        s3forms.S3SQLInlineComponent(
+#         "request",
+#         name = "request",
+#         label = T("Project requests"),
+#         fields = ["req_id",
+#         "type",
+#         "purpose",
+#         ],
+#         filterby = dict(field = "type")
+#        ),             
+        s3forms.S3SQLInlineComponentCheckbox(
+            "request",
+            label = T("Requests"),
+            field = "request_id",
+            cols = 3,
+            # Filter Requests by Project
+            filter = {"linktable": "project_request_project",
+                      "lkey": "project_id",
+                      "rkey": "request_id",
+                      },
+        ),                                                   
         s3forms.S3SQLInlineComponentCheckbox(
             "activity_type",
             label = T("Categories"),

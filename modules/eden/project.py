@@ -37,6 +37,7 @@ __all__ = ["S3ProjectModel",
            "S3ProjectLocationModel",
            "S3ProjectOrganisationModel",
            "S3ProjectSectorModel",
+           "S3ProjectRequestModel",
            "S3ProjectThemeModel",
            "S3ProjectDRRModel",
            "S3ProjectDRRPPModel",
@@ -437,6 +438,7 @@ class S3ProjectModel(S3Model):
                                       "organisation",
                                       "activity",
                                       "activity_type",
+                                      "request",
                                       "annual_budget",
                                       "beneficiary",
                                       "location",
@@ -542,7 +544,15 @@ class S3ProjectModel(S3Model):
         # Locations
         add_component("project_location", project_project="project_id")
 
-        # Sectors
+        # Requests
+        add_component("project_request",
+                      project_project=Storage(
+                                link="project_request_project",
+                                joinby="project_id",
+                                key="request_id",
+                                actuate="hide"))
+
+        # Requests
         add_component("org_sector",
                       project_project=Storage(
                                 link="project_sector_project",
@@ -2110,6 +2120,50 @@ class S3ProjectSectorModel(S3Model):
             msg_record_modified = T("Sector updated"),
             msg_record_deleted = T("Sector removed from Project"),
             msg_list_empty = T("No Sectors found for this Project")
+        )
+
+        # Pass names back to global scope (s3.*)
+        return dict(
+            )
+
+# =============================================================================
+class S3ProjectRequestModel(S3Model):
+    """
+        Project Request Model
+    """
+
+    names = ["project_request_project",
+             ]
+
+    def model(self):
+
+        T = current.T
+
+        # ---------------------------------------------------------------------
+        # Projects <> Requests Link Table
+        #
+        tablename = "project_request_project"
+        self.define_table(tablename,
+                          self.req_req_id(empty=False),
+                          self.project_project_id(empty=False),
+                          *s3_meta_fields()
+                          )
+
+        # CRUD Strings
+        current.response.s3.crud_strings[tablename] = Storage(
+            title_create = T("New Request"),
+            title_display = T("Request"),
+            title_list = T("Requests"),
+            title_update = T("Edit Request"),
+            title_search = T("Search Requests"),
+            title_upload = T("Import Request data"),
+            subtitle_create = T("Add New Request"),
+            label_list_button = T("List Requests"),
+            label_create_button = T("Add Request to Project"),
+            msg_record_created = T("Request added to Project"),
+            msg_record_modified = T("Request updated"),
+            msg_record_deleted = T("Request removed from Project"),
+            msg_list_empty = T("No Requests found for this Project")
         )
 
         # Pass names back to global scope (s3.*)
